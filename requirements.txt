@@ -1,0 +1,5 @@
+Flask>=2.0
+Flask-Cors>=3.0
+fastapi>=0.95
+uvicorn>=0.22
+

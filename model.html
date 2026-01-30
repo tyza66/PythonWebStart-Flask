@@ -1,0 +1,19 @@
+<html>
+
+<header>
+    <title>{{ title }}</title>
+</header>
+
+<body>
+    <h1>{{ title }}</h1>
+    <p>当前用户：{{ user.name }} （角色：{{ user.role }}）</p>
+
+    <h2>物品列表</h2>
+    <ul>
+        {% for it in items %}
+        <li>{{ it.id }} - {{ it.name }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

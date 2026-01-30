@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>OCrs 跨域演示（FastAPI 提供）</title>
+    <style>
+      body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial; padding:24px}
+      pre{background:#f6f8fa;padding:12px;border-radius:6px}
+      button{padding:8px 12px;border-radius:6px}
+      .box{margin-bottom:18px}
+    </style>
+  </head>
+  <body>
+    <h1>OCrs 跨域演示（由 FastAPI 提供页面）</h1>
+    <p>点击按钮会使用 fetch 发送两个跨域 GET 请求：</p>
+    <ul>
+      <li><code>http://127.0.0.1:7001/</code> —— 来自 <code>01_flask_start.py</code>（普通 Flask，未开启 CORS）</li>
+      <li><code>http://127.0.0.1:7002/</code> —— 来自 <code>04_ocrs.py</code>（已开放 CORS 的示例）</li>
+    </ul>
+
+    <div class="box">
+      <button id="btn">开始测试</button>
+    </div>
+
+    <div class="box">
+      <h3>7001 根路径（01_flask_start）</h3>
+      <pre id="out7001">（暂未发起请求）</pre>
+    </div>
+
+    <div class="box">
+      <h3>7002 /demo（04_ocrs）</h3>
+      <pre id="out7002">（暂未发起请求）</pre>
+    </div>
+
+    <script>
+      const out7001 = document.getElementById('out7001');
+      const out7002 = document.getElementById('out7002');
+      document.getElementById('btn').addEventListener('click', async () => {
+        out7001.textContent = '请求中...';
+        out7002.textContent = '请求中...';
+
+        // 请求 7001 根路径
+        try {
+          const r1 = await fetch('http://127.0.0.1:7001/');
+          const txt = await r1.text();
+          out7001.textContent = JSON.stringify({status: r1.status, ok: r1.ok, body: txt}, null, 2);
+        } catch (err) {
+          out7001.textContent = '请求失败（可能是 CORS 或网络问题）：' + String(err);
+        }
+
+        // 请求 7002 /demo
+        try {
+          const r2 = await fetch('http://127.0.0.1:7002/');
+          let body;
+          try { body = await r2.json(); } catch(e) { body = await r2.text(); }
+          const headers = {};
+          r2.headers.forEach((v,k)=> headers[k]=v);
+          out7002.textContent = JSON.stringify({status: r2.status, ok: r2.ok, headers, body}, null, 2);
+        } catch (err) {
+          out7002.textContent = '请求失败（可能是 CORS 或网络问题）：' + String(err);
+        }
+      });
+    </script>
+  </body>
+</html>
