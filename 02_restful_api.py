@@ -9,6 +9,8 @@ from flask import Flask, request, jsonify, abort
 def create_app(test_config: Dict[str, Any] | None = None) -> Flask:
     app = Flask(__name__)
 
+    app.config["USERS"] = []
+
     # 返回Json格式的数据
     @app.route("/health", methods=["GET"])
     def health():
@@ -20,7 +22,7 @@ def create_app(test_config: Dict[str, Any] | None = None) -> Flask:
         item = {"item_id": item_id, "name": f"Item {item_id}", "price": 9.99}
         return jsonify(item), 200
 
-    # 携带查询参数（query参数）的Get请求接口 这里是 q 和 limit
+    # 携带查询参数（query参数、params）的Get请求接口 这里是 q 和 limit
     @app.route("/search", methods=["GET"])
     def search():
         q = request.args.get("q")

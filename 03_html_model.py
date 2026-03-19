@@ -5,9 +5,6 @@ from flask import Flask, render_template
 
 
 def create_app(test_config: Dict[str, Any] | None = None) -> Flask:
-    """Create a small Flask app that serves index.html and model.html with data."""
-
-    # Use project root as template folder so existing HTML files are found directly
     app = Flask(__name__, template_folder='.')
 
     @app.route('/')
